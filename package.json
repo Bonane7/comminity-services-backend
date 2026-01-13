@@ -1,0 +1,27 @@
+{
+  "name": "comminity-services-backend",
+  "version": "1.0.0",
+  "description": "learning project booking-service",
+  "homepage": "https://github.com/Bonane7/comminity-services-backend#readme",
+  "bugs": {
+    "url": "https://github.com/Bonane7/comminity-services-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bonane7/comminity-services-backend.git"
+  },
+  "license": "ISC",
+  "author": "BUSOKE Bonane",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon ./src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.1.3",
+    "nodemon": "^3.1.11"
+  }
+}
