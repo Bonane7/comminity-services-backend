@@ -6,8 +6,14 @@ import dotenv from "dotenv";
 //7 import mongoose
 import mongoose from "mongoose";
 
+//a)
+import router from "./routers/userRouter.js";
+
 //2)nous apeller tout les element d'express dans app
 const app = express();
+
+//a)
+app.use("/api/v1",router)
 
 //5)nous appelon dotenv pour parcourir la route proccess .env
 dotenv.config();
