@@ -8,12 +8,16 @@ import mongoose from "mongoose";
 
 //a)
 import router from "./routers/userRouter.js";
+//b)
+
+import bodyParser from "body-parser";
 
 //2)nous apeller tout les element d'express dans app
 const app = express();
-
+app.use(bodyParser.json())
 //a)
 app.use("/api/v1",router)
+//b)
 
 //5)nous appelon dotenv pour parcourir la route proccess .env
 dotenv.config();
