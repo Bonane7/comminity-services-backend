@@ -1,12 +1,13 @@
-//1) import express qui contien le code router
-import express from "express";
-import controller from "../controller/userController.js";
+import express from "express"
+import controller from "../controller/userController.js"
+import EmailExist from "../midleware/validation.js"
+import { VerifyAccess } from "../midleware/verifyAccess.js"
 
-//2) amener les code qui se trouve dans express dans router
-const router = express.Router();
-//3)
-router.post("/user",controller.signup)
-
-
-
+const router = express.Router()
+router.post("/create", EmailExist, controller.signup)
+router.post("/login",controller.login)
+router.get("/users",VerifyAccess('client'),controller.getAllUsers)
+router.get("/user/:id",controller.getOneUser)
+router.delete("/users",controller.deletAllUser)
+router.patch("/user/:id",controller.updateUser)
 export default router

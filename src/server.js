@@ -1,43 +1,25 @@
-//1) declaration
-import express from "express";
-//4) import dotenv
-import dotenv from "dotenv";
+import express from 'express';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import router from './routers/index.js';
+import bodyParser from 'body-parser';
 
-//7 import mongoose
-import mongoose from "mongoose";
 
-//a)
-import router from "./routers/userRouter.js";
-//b)
-
-import bodyParser from "body-parser";
-
-//2)nous apeller tout les element d'express dans app
-const app = express();
-app.use(bodyParser.json())
-//a)
-app.use("/api/v1",router)
-//b)
-
-//5)nous appelon dotenv pour parcourir la route proccess .env
 dotenv.config();
+const app = express();
+const db = process.env.DATABASE
+console.log(db)
+const PORT = process.env.PORT;
+app.use(bodyParser.json())
+app.use("/api/v1", router)
 
-//3 nous appelon le port
-const port = process.env.PORT;
-//8connect mdb
-const db = process.env.DATABASE;
 
-//6) connect the app to the port
-app.listen(port, () => {
-  console.log(`Server Runing on Port: ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
-//9)connect mongoose
 mongoose
-  .connect(db)
-  .then(() => {
-    console.log("Database connected successfuly");
-  })
-  .catch((error) => {
-    console.log(`Error is ${error}`);
-  });
+.connect(db)
+.then(() => {
+  console.log('Database connected successfully');
+}).catch((error) => { console.log(`Error is ${error}`) });

@@ -1,46 +1,89 @@
 import User from "../models/userModel.js"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+
 
 class controller {
 
-static signup=async(req,res)=>{
-    const {names,email,password,role} = req.body
-    const hashPassword = bcrypt.hashSync(req.body.password,10)
- try {
-       const user = await User.create({names,email,password:hashPassword,role})
-    if(!user){
-        return res.status(400).json({message: "creation user failed"});
-    }else{
-        return res.status(201).json({message: "User successfuly created",user})
+    static signup = async (req, res) => {
+        const { names, email, password, role } = req.body
+        const hashPassword = bcrypt.hashSync(password, 10)
+        try {
+            const user = await User.create({ names, email, password: hashPassword, role })
+            if (!user) {
+                return res.status(400).json({ message: "user not found" })
+            } else {
+                return res.status(201).json({ message: "user created sucessfuly ", user })
+            }
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ message: "create user failed" })
+        }
+
     }
- } catch (error) {
-    console.log(error)
-    return res.status(500).json({message:`Creat user failed ${error}`})
- }
-}
-static login =async(req, resp)=>{
-    const {email,password}= req.body
-    const user = await User.findOne({email})
-    if(!user){
-        return res.status(401).json({message:"Invalid Email"})
-    }else{
-        const comparePassword = bcrypt.compareSync(password,user,password)
-        if(!comparePassword){
-            return res.status(404).json({message:"Invalide password"})
-        }else{
-            const
+
+    static login = async (req, res) => {
+        const { email, password } = req.body
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(404).json({ message: "Invalid email!" })
+        } else {
+            const comparePassword = bcrypt.compareSync(password, user.password)
+            if (!comparePassword) {
+                return res.status(404).json({ message: "invalid password!" })
+            } else {
+                const token = jwt.sign({ user: user }, process.env.SCRET_KEY, { expiresIn: "2d" })
+                return res.status(201).json({ message: "login successful", token })
+            }
+        }
+
+
+    }
+
+    static getAllUsers = async (req, res) => {
+        const users = await User.find()
+        if (!users) {
+            return res.status(404).json({ message: "No users found!" })
+
+        } else {
+            return res.status(201).json({ message: "Users successfully retrived", users })
+
+
+
         }
     }
+
+
+    static updateUser = async (req, res) => {
+        const id = req.params.id
+        const user = await User.findByIdAndUpdate(id, req.body, { new: true })
+        if (!user) {
+            return res.status(404).json({ message: "No user found!" })
+        } else {
+            return res.status(201).json({ message: "User is updated successfully!", user })
+        }
+    }
+
+
+    static deletAllUser = async (req, res) => {
+        const users = await User.deleteMany()
+        if (!users) {
+            return res.status(404).json({ message: 'User not found' })
+        } else {
+            return res.status(200).json({ message: "user successfuly deleted", users })
+        }
+    }
+
+    static getOneUser = async (req, res) => {
+        const id = req.params.id
+        const user = await User.findById(id)
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        } else {
+            return res.status(200).json({ message: "user successfuly retrived", user })
+        }
+
+    }
+
 }
-
-
-
-}
-
-
-
-
-
-
-
 export default controller;
