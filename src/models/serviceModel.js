@@ -11,7 +11,7 @@ const serviceSchema = new mongoose.Schema({
         require:[true,'please description is required']
     },
     categorys:{
-        type:mongoose.Schema.types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Category"
     },
     price:{
